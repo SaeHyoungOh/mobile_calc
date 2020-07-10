@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="mobile_calc.MainPage">
+
+	<ContentPage.Resources>
+		<Style TargetType="Button"
+			   x:Key="baseButton">
+			<Setter Property="FontFamily" Value="Arial"/>
+			<Setter Property="BorderWidth" Value="0"/>
+			<Setter Property="TextColor" Value="White"/>
+			<Setter Property="BackgroundColor" Value="#1B1B1B"/>
+			<Setter Property="FontSize" Value="30"/>
+			<Setter Property="Padding" Value="0, -5, 0, 0"/>
+		</Style>
+		<Style TargetType="Button"
+			   x:Key="numberButton"
+			   BasedOn="{StaticResource baseButton}">
+			<Setter Property="BackgroundColor" Value="Black"/>
+			<Setter Property="FontSize" Value="20"/>
+			<Setter Property="Padding" Value="0, 0, 0, 0"/>
+		</Style>
+		<Style TargetType="Label"
+			   x:Key="TitleText">
+			<Setter Property="FontFamily" Value="Arial"/>
+			<Setter Property="TextColor" Value="White"/>
+			<Setter Property="FontSize" Value="24"/>
+			<Setter Property="HorizontalTextAlignment" Value="Center"/>
+			<Setter Property="Padding" Value="0, 5, 0, 0"/>
+		</Style>
+		<Style TargetType="Label"
+			   x:Key="RunningDisplay">
+			<Setter Property="FontFamily" Value="Arial"/>
+			<Setter Property="TextColor" Value="White"/>
+			<Setter Property="HorizontalTextAlignment" Value="Right"/>
+		</Style>
+	</ContentPage.Resources>
+
+	<Grid 
+		BackgroundColor="#343434"
+		Padding="5, 5, 5, 5">
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="3*"/>
+			<ColumnDefinition Width="2*"/>
+		</Grid.ColumnDefinitions>
+		
+		<!-- calculator side -->
+		<Grid
+			Padding="5, 5, 5, 5">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<!-- section title: calculator -->
+			<Label Grid.Row="0" Grid.ColumnSpan="4"
+				   Text="Calculator"
+				   Style="{StaticResource TitleText}"/>
+
+			<!-- current equation -->
+			<Label Grid.Row="1" Grid.ColumnSpan="4"
+				   x:Name="CurrentCalculation"
+				   Text=""
+				   FontSize="15"
+				   Padding="0, 0, 10, 0"
+				   Style="{StaticResource RunningDisplay}"/>
+
+			<!-- current number -->
+			<Label Grid.Row="2" Grid.ColumnSpan="4"
+				   x:Name="CurrentNumber"
+				   Text="0"
+				   FontSize="30"
+				   Padding="0, -10, 10, 5"
+				   VerticalOptions="CenterAndExpand"
+				   Style="{StaticResource RunningDisplay}"/>
+
+			<!-- number buttons -->
+			<Button Grid.Row="6" Grid.Column="0"
+					x:Name="Number1"
+					Text="1"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="6" Grid.Column="1"
+					x:Name="Number2"
+					Text="2"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="6" Grid.Column="2"
+					x:Name="Number3"
+					Text="3"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="5" Grid.Column="0"
+					x:Name="Number4"
+					Text="4"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="5" Grid.Column="1"
+					x:Name="Number5"
+					Text="5"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="5" Grid.Column="2"
+					x:Name="Number6"
+					Text="6"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="4" Grid.Column="0"
+					x:Name="Number7"
+					Text="7"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="4" Grid.Column="1"
+					x:Name="Number8"
+					Text="8"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="4" Grid.Column="2"
+					x:Name="Number9"
+					Text="9"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="7" Grid.Column="0"
+					x:Name="PlusMinus"
+					Text="+/-"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="7" Grid.Column="1"
+					x:Name="Number0"
+					Text="0"
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="7" Grid.Column="2"
+					x:Name="Decimal"
+					Text="."
+					Style="{StaticResource numberButton}"
+					Clicked="NumberClick"/>
+
+			<!-- operator buttons -->
+			<Button Grid.Row="4" Grid.Column="3"
+					x:Name="Divide"
+					Text="&#x00F7;"
+					Style="{StaticResource baseButton}"
+					Clicked="OperatorClick"/>
+			<Button Grid.Row="5" Grid.Column="3"
+					x:Name="Multiply"
+					Text="&#x00D7;"
+					Style="{StaticResource baseButton}"
+					Clicked="OperatorClick"/>
+			<Button Grid.Row="6" Grid.Column="3"
+					x:Name="Minus"
+					Text="&#x2212;"
+					Style="{StaticResource baseButton}"
+					Clicked="OperatorClick"/>
+			<Button Grid.Row="7" Grid.Column="3"
+					x:Name="Plus"
+					Text="+"
+					Style="{StaticResource baseButton}"
+					Clicked="OperatorClick"/>
+			<Button Grid.Row="8" Grid.ColumnSpan="4"
+					x:Name="Equal"
+					Text="="
+					Style="{StaticResource baseButton}"
+					Clicked="OperatorClick"/>
+
+			<Button Grid.Row="3" Grid.Column="2"
+					x:Name="Clear"
+					Text="C"
+					FontSize="20"
+					Style="{StaticResource baseButton}"
+					Clicked="NumberClick"/>
+			<Button Grid.Row="3" Grid.Column="3"
+					x:Name="Backspace"
+					Text="&#x232B;"
+					FontSize="20"
+					Style="{StaticResource baseButton}"
+					Clicked="NumberClick"/>
+
+		</Grid>
+		
+		<!-- history side -->
+		<Grid Grid.Row="0" Grid.Column="1"
+			  Padding="5, 5, 5, 5">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			
+			<!-- section title: history -->
+			<Label Grid.Row="0" Grid.Column="0"
+				   Text="History"
+				   Style="{StaticResource TitleText}"/>
+
+			<!-- history -->
+			<Grid Grid.Row="1" Grid.RowSpan="8" Grid.Column="0"
+				  BackgroundColor="Gray">
+				<ListView
+					BackgroundColor="#343434"
+					Margin="1, 1, 1, 1"
+					x:Name="CalculationHistory"
+					ItemsSource="{Binding HistoryItems}">
+				</ListView>
+			</Grid>
+		</Grid>
+	</Grid>
+
+</ContentPage>
