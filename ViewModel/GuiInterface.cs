@@ -1,56 +1,163 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace gui_calc.Class
+namespace gui_calc.ViewModel
 {
-	/*
-	 * Class to provide interface between GUI and Calculation class
-	 */
-	class GuiInterface
+	/// <summary>
+	/// Class to provide interface between GUI and Calculation class
+	/// </summary>
+	public class GuiInterface : INotifyPropertyChanged
 	{
-		private List<Calculation> history = new List<Calculation>();
-		private int histIndex = 0, pos = 0;
-		private string numString = "0";
-		private string equation = "";
-		private bool numberProcessing = false, endOfEquation = false;
+		/// <summary>
+		/// a list of Calculation objects to keep track of previous calculations (equations)
+		/// </summary>
+		private List<Calculation> history;
 
+		/// <summary>
+		/// index for the list of Calculation objects
+		/// </summary>
+		private int histIndex = 0;
+
+		/// <summary>
+		/// index for the numList and operList in a Calculation object
+		/// </summary>
+		private int pos = 0;
+
+		/// <summary>
+		/// current number to be displayed on calculator in string
+		/// </summary>
+		public string DisplayNumber
+		{
+			get
+			{
+				return displayNumber;
+			}
+
+			private set
+			{
+				displayNumber = value;
+				OnPropertyChanged();
+			}
+		}
+
+		/// <summary>
+		/// required field for DisplayNumber property
+		/// </summary>
+		private string displayNumber;
+
+		/// <summary>
+		/// numbers and oeprators clicked so far for the current calculation
+		/// </summary>
+		public string Equation
+		{
+			get
+			{
+				return equation;
+			}
+
+			private set
+			{
+				equation = value;
+				OnPropertyChanged();
+			}
+		}
+		
+		/// <summary>
+		/// required field for Equation property
+		/// </summary>
+		private string equation;
+
+		/// <summary>
+		/// a list of previous equations to display on view
+		/// </summary>
+		public ObservableCollection<string> DisplayHistory
+		{
+			get
+			{
+				return displayHistory;
+			}
+
+			private set
+			{
+				displayHistory = value;
+				OnPropertyChanged();
+			}
+		}
+
+		/// <summary>
+		/// required field for DisplayHistory property
+		/// </summary>
+		private ObservableCollection<string> displayHistory;
+
+		/// <summary>
+		/// currently a number is being processed, as oppsed to an operator
+		/// </summary>
+		private bool numberProcessing = false;
+
+		/// <summary>
+		/// it is a state where "=" is entered most recently
+		/// </summary>
+		private bool endOfEquation = false;
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		/// <summary>
+		/// helper method to update View using PropertyChanged
+		/// </summary>
+		/// <param name="name"></param>
+		protected void OnPropertyChanged([CallerMemberName] string name = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+		}
+
+		/// <summary>
+		/// constructor to instantiate lists and initialize variables
+		/// </summary>
 		public GuiInterface()
 		{
+			history = new List<Calculation>();
 			history.Add(new Calculation());
+
+			DisplayHistory = new ObservableCollection<string>();
+
+			DisplayNumber = "0";
+			Equation = string.Empty;
 		}
-		public string GetNumString()
-		{
-			return numString;
-		}
-		public string GetEquation()
-		{
-			return equation;
-		}
+
+		/// <summary>
+		/// changes signs of the number
+		/// </summary>
 		private void PlusMinus()
 		{
 			// nothing to do for zero
-			if (numString == "0")
+			if (DisplayNumber == "0")
 				return;
 
 			// convert negative number to positive
-			if (numString[0] == '-')
+			if (DisplayNumber[0] == '-')
 			{
-				numString = numString.Remove(0, 1);
+				DisplayNumber = DisplayNumber.Remove(0, 1);
 			}
 			// convert positive number to negative
 			else
 			{
-				numString = "-" + numString;
+				DisplayNumber = "-" + DisplayNumber;
 			}
 		}
 
-		// add number character to number string
-		public string NumberAdd(string sender)
+		/// <summary>
+		/// add number character to number string (DisplayNumber)
+		/// </summary>
+		/// <param name="sender">the number or symbol entered by user</param>
+		/// <returns>DisplayNumber</returns>
+		protected void NumberAdd(string sender)
 		{
 			// start a new equation
 			if (endOfEquation)
@@ -64,13 +171,13 @@ namespace gui_calc.Class
 				// change of signs is an exception
 				if (sender != "+/-")
 				{
-					numString = "";
+					DisplayNumber = "";
 				}
 
 				numberProcessing = false;
 				if (history[histIndex].GetOperSize() == 0)
 				{
-					equation = "";
+					Equation = "";
 				}
 			}
 
@@ -82,49 +189,54 @@ namespace gui_calc.Class
 			// clear number string and equation
 			else if (sender == "C")
 			{
-				numString = "0";
-				equation = "";
+				DisplayNumber = "0";
+				Equation = "";
 				history[histIndex].Clear();
 			}
 			// delete one character in number string
-			else if (sender == "\u232B")
+			else if (sender == "B")
 			{
-				numString = numString.Remove(numString.Length - 1);
-
-				if (numString == "")
+				if (DisplayNumber.Length > 0)
 				{
-					numString = "0";
+					DisplayNumber = DisplayNumber.Remove(DisplayNumber.Length - 1);
+				}
+
+				if (DisplayNumber == "")
+				{
+					DisplayNumber = "0";
 				}
 			}
 			// add the new number character to the number string
 			else
 			{
 				// if there is only "0" in the number string, remove it first
-				if (numString == "0" && sender != ".")
+				if (DisplayNumber == "0" && sender != ".")
 				{
-					numString = "";
+					DisplayNumber = "";
 				}
 
 				// if there is already a decimal point, do not add another
-				if (!(sender == "." && numString.Contains('.')))
+				if (!(sender == "." && DisplayNumber.Contains('.')))
 				{
-					numString += sender;
+					DisplayNumber += sender;
 				}
 
 			}
-
-			return numString;
 		}
 
-		// add operator to the equation and return the whole equation
-		public string OperatorAdd(string sender)
+		/// <summary>
+		/// add operator to the equation and return 
+		/// </summary>
+		/// <param name="sender">the operator entered by user</param>
+		/// <returns>the whole equation formatted to display</returns>
+		protected void OperatorAdd(char oper)
 		{
 			// add number string to equation
 			if (!numberProcessing || endOfEquation)
 			{
-				if (Double.TryParse(numString, out double result))
+				if (Double.TryParse(DisplayNumber, out double result))
 				{
-					history[histIndex].AddNum(result);		// add the number
+					history[histIndex].AddNum(result);      // add the number
 				}
 			}
 			numberProcessing = true;
@@ -136,28 +248,10 @@ namespace gui_calc.Class
 			}
 			else
 			{
-				numString = Convert.ToString(history[histIndex].Calculate(history[histIndex].GetOper(pos - 1)));
+				DisplayNumber = Convert.ToString(history[histIndex].Calculate(history[histIndex].GetOper(pos - 1)));
 			}
 
 			pos++;
-
-			// add operator to the equation
-			char oper;
-			switch (sender)
-			{
-				case "\u00F7":
-					oper = '/';
-					break;
-				case "\u00D7":
-					oper = '*';
-					break;
-				case "\u2212":
-					oper = '-';
-					break;
-				default:
-					oper = sender[0];
-					break;
-			}
 
 			// if "=" is entered after "=", re-do the previous operation
 			if (endOfEquation && history[histIndex - 1].GetOperSize() > 1 && oper == '=')
@@ -168,22 +262,22 @@ namespace gui_calc.Class
 
 				history[histIndex].AddOper(lastOper);
 				history[histIndex].AddNum(lastNum);
-				numString = Convert.ToString(history[histIndex].Calculate(history[histIndex].GetOper(pos - 1)));
+				DisplayNumber = Convert.ToString(history[histIndex].Calculate(history[histIndex].GetOper(pos - 1)));
 			}
 
-			history[histIndex].AddOper(oper);				// add the operator
-			equation = history[histIndex].GetEquation();    // to return
+			history[histIndex].AddOper(oper);               // add the operator
+			Equation = history[histIndex].GetEquation();    // string to return
 
 			// if "=" is entered, start a new calculation
 			if (oper == '=')
 			{
+				DisplayHistory.Insert(0, Equation + DisplayNumber);     // add the whole equation to the display list
+
 				history.Add(new Calculation());
 				histIndex++;
 				pos = 0;
 				endOfEquation = true;
 			}
-
-			return equation;
 		}
 	}
 }

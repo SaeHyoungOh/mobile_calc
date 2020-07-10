@@ -1,14 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="mobile_calc.MainPage">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+			 xmlns:vm="clr-namespace:gui_calc.ViewModel"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 x:Class="mobile_calc.MainPage">
 
+	<ContentPage.BindingContext>
+		<vm:DelegatedMobileGUI/>
+	</ContentPage.BindingContext>
 	<ContentPage.Resources>
-		<Style TargetType="Button"
-			   x:Key="baseButton">
+		<Style x:Key="baseButton"
+			   TargetType="Button">
 			<Setter Property="FontFamily" Value="Arial"/>
 			<Setter Property="BorderWidth" Value="0"/>
 			<Setter Property="TextColor" Value="White"/>
@@ -16,23 +20,23 @@
 			<Setter Property="FontSize" Value="30"/>
 			<Setter Property="Padding" Value="0, -5, 0, 0"/>
 		</Style>
-		<Style TargetType="Button"
-			   x:Key="numberButton"
+		<Style x:Key="numberButton"
+			   TargetType="Button"
 			   BasedOn="{StaticResource baseButton}">
 			<Setter Property="BackgroundColor" Value="Black"/>
 			<Setter Property="FontSize" Value="20"/>
 			<Setter Property="Padding" Value="0, 0, 0, 0"/>
 		</Style>
-		<Style TargetType="Label"
-			   x:Key="TitleText">
+		<Style x:Key="TitleText"
+			   TargetType="Label">
 			<Setter Property="FontFamily" Value="Arial"/>
 			<Setter Property="TextColor" Value="White"/>
 			<Setter Property="FontSize" Value="24"/>
 			<Setter Property="HorizontalTextAlignment" Value="Center"/>
 			<Setter Property="Padding" Value="0, 5, 0, 0"/>
 		</Style>
-		<Style TargetType="Label"
-			   x:Key="RunningDisplay">
+		<Style x:Key="RunningDisplay"
+			   TargetType="Label">
 			<Setter Property="FontFamily" Value="Arial"/>
 			<Setter Property="TextColor" Value="White"/>
 			<Setter Property="HorizontalTextAlignment" Value="Right"/>
@@ -71,128 +75,147 @@
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
 			<!-- section title: calculator -->
-			<Label Grid.Row="0" Grid.ColumnSpan="4"
-				   Text="Calculator"
+			<Label Text="Calculator"
+				   Grid.Row="0" Grid.ColumnSpan="4"
 				   Style="{StaticResource TitleText}"/>
 
 			<!-- current equation -->
-			<Label Grid.Row="1" Grid.ColumnSpan="4"
-				   x:Name="CurrentCalculation"
-				   Text=""
+			<Label x:Name="CurrentCalculation"
+				   Grid.Row="1" Grid.ColumnSpan="4"
 				   FontSize="15"
 				   Padding="0, 0, 10, 0"
-				   Style="{StaticResource RunningDisplay}"/>
+				   Style="{StaticResource RunningDisplay}"
+				   Text="{Binding Equation}"/>
 
 			<!-- current number -->
-			<Label Grid.Row="2" Grid.ColumnSpan="4"
-				   x:Name="CurrentNumber"
-				   Text="0"
+			<Label x:Name="CurrentNumber"
+				   Grid.Row="2" Grid.ColumnSpan="4"
 				   FontSize="30"
 				   Padding="0, -10, 10, 5"
 				   VerticalOptions="CenterAndExpand"
-				   Style="{StaticResource RunningDisplay}"/>
+				   Style="{StaticResource RunningDisplay}"
+				   Text="{Binding DisplayNumber}"/>
 
 			<!-- number buttons -->
-			<Button Grid.Row="6" Grid.Column="0"
-					x:Name="Number1"
+			<Button x:Name="Number1"
+					Grid.Row="6" Grid.Column="0"
 					Text="1"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="6" Grid.Column="1"
-					x:Name="Number2"
+					Command="{Binding NumberClick}"
+					CommandParameter="1"/>
+			<Button x:Name="Number2"
+					Grid.Row="6" Grid.Column="1"
 					Text="2"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="6" Grid.Column="2"
-					x:Name="Number3"
+					Command="{Binding NumberClick}"
+					CommandParameter="2"/>
+			<Button x:Name="Number3"
+					Grid.Row="6" Grid.Column="2"
 					Text="3"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="5" Grid.Column="0"
-					x:Name="Number4"
+					Command="{Binding NumberClick}"
+					CommandParameter="3"/>
+			<Button x:Name="Number4"
+					Grid.Row="5" Grid.Column="0"
 					Text="4"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="5" Grid.Column="1"
-					x:Name="Number5"
+					Command="{Binding NumberClick}"
+					CommandParameter="4"/>
+			<Button x:Name="Number5"
+					Grid.Row="5" Grid.Column="1"
 					Text="5"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="5" Grid.Column="2"
-					x:Name="Number6"
+					Command="{Binding NumberClick}"
+					CommandParameter="5"/>
+			<Button x:Name="Number6"
+					Grid.Row="5" Grid.Column="2"
 					Text="6"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="4" Grid.Column="0"
-					x:Name="Number7"
+					Command="{Binding NumberClick}"
+					CommandParameter="6"/>
+			<Button x:Name="Number7"
+					Grid.Row="4" Grid.Column="0"
 					Text="7"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="4" Grid.Column="1"
-					x:Name="Number8"
+					Command="{Binding NumberClick}"
+					CommandParameter="7"/>
+			<Button x:Name="Number8"
+					Grid.Row="4" Grid.Column="1"
 					Text="8"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="4" Grid.Column="2"
-					x:Name="Number9"
+					Command="{Binding NumberClick}"
+					CommandParameter="8"/>
+			<Button x:Name="Number9"
+					Grid.Row="4" Grid.Column="2"
 					Text="9"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="7" Grid.Column="0"
-					x:Name="PlusMinus"
+					Command="{Binding NumberClick}"
+					CommandParameter="9"/>
+			<Button x:Name="PlusMinus"
+					Grid.Row="7" Grid.Column="0"
 					Text="+/-"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="7" Grid.Column="1"
-					x:Name="Number0"
+					Command="{Binding NumberClick}"
+					CommandParameter="+/-"/>
+			<Button x:Name="Number0"
+					Grid.Row="7" Grid.Column="1"
 					Text="0"
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="7" Grid.Column="2"
-					x:Name="Decimal"
+					Command="{Binding NumberClick}"
+					CommandParameter="0"/>
+			<Button x:Name="Decimal"
+					Grid.Row="7" Grid.Column="2"
 					Text="."
 					Style="{StaticResource numberButton}"
-					Clicked="NumberClick"/>
+					Command="{Binding NumberClick}"
+					CommandParameter="."/>
 
 			<!-- operator buttons -->
-			<Button Grid.Row="4" Grid.Column="3"
-					x:Name="Divide"
+			<Button x:Name="Divide"
+					Grid.Row="4" Grid.Column="3"
 					Text="&#x00F7;"
 					Style="{StaticResource baseButton}"
-					Clicked="OperatorClick"/>
-			<Button Grid.Row="5" Grid.Column="3"
-					x:Name="Multiply"
+					Command="{Binding OperatorClick}"
+					CommandParameter="/"/>
+			<Button x:Name="Multiply"
+					Grid.Row="5" Grid.Column="3"
 					Text="&#x00D7;"
 					Style="{StaticResource baseButton}"
-					Clicked="OperatorClick"/>
-			<Button Grid.Row="6" Grid.Column="3"
-					x:Name="Minus"
+					Command="{Binding OperatorClick}"
+					CommandParameter="*"/>
+			<Button x:Name="Minus"
+					Grid.Row="6" Grid.Column="3"
 					Text="&#x2212;"
 					Style="{StaticResource baseButton}"
-					Clicked="OperatorClick"/>
-			<Button Grid.Row="7" Grid.Column="3"
-					x:Name="Plus"
+					Command="{Binding OperatorClick}"
+					CommandParameter="-"/>
+			<Button x:Name="Plus"
+					Grid.Row="7" Grid.Column="3"
 					Text="+"
 					Style="{StaticResource baseButton}"
-					Clicked="OperatorClick"/>
-			<Button Grid.Row="8" Grid.ColumnSpan="4"
-					x:Name="Equal"
+					Command="{Binding OperatorClick}"
+					CommandParameter="+"/>
+			<Button x:Name="Equal"
+					Grid.Row="8" Grid.ColumnSpan="4"
 					Text="="
 					Style="{StaticResource baseButton}"
-					Clicked="OperatorClick"/>
+					Command="{Binding OperatorClick}"
+					CommandParameter="="/>
 
-			<Button Grid.Row="3" Grid.Column="2"
-					x:Name="Clear"
+			<Button x:Name="Clear"
+					Grid.Row="3" Grid.Column="2"
 					Text="C"
 					FontSize="20"
 					Style="{StaticResource baseButton}"
-					Clicked="NumberClick"/>
-			<Button Grid.Row="3" Grid.Column="3"
-					x:Name="Backspace"
+					Command="{Binding NumberClick}"
+					CommandParameter="C"/>
+			<Button x:Name="Backspace"
+					Grid.Row="3" Grid.Column="3"
 					Text="&#x232B;"
 					FontSize="20"
 					Style="{StaticResource baseButton}"
-					Clicked="NumberClick"/>
+					Command="{Binding NumberClick}"
+					CommandParameter="B"/>
 
 		</Grid>
 		
@@ -219,7 +242,22 @@
 					BackgroundColor="#343434"
 					Margin="1, 1, 1, 1"
 					x:Name="CalculationHistory"
-					ItemsSource="{Binding HistoryItems}">
+					HasUnevenRows="True"
+					ItemsSource="{Binding DisplayHistory}">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<ViewCell.View>
+									<Label
+										Text="{Binding}"
+										Style="{StaticResource TitleText}"
+										LineBreakMode="WordWrap"
+										Padding="0, 0, 10, 5"
+										HorizontalTextAlignment="Right"/>
+								</ViewCell.View>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
 				</ListView>
 			</Grid>
 		</Grid>

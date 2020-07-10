@@ -4,31 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gui_calc.Class
+namespace gui_calc.ViewModel
+
 {
-	/*
-	 * Class to hold numbers and calculate them
-	 */
+	/// <summary>
+	/// Class to hold numbers and calculate them
+	/// </summary>
 	public class Calculation
 	{
 		private List<double> numList = new List<double>();
 		private List<char> operList = new List<char>();
-		private double runningResult = 0;
 
-		// add a number to the operand list
+		/// <summary>
+		/// holds the running result of the calculation equation so far
+		/// </summary>
+		public double runningResult { get; private set; }
+
+		/// <summary>
+		/// constructor, initializes runningResult to 0
+		/// </summary>
+		public Calculation()
+		{
+			runningResult = 0;
+		}
+
+		/// <summary>
+		/// add a number to the operand list
+		/// </summary>
+		/// <param name="input">number to add to the list</param>
+		/// <returns>count of items in the list</returns>
 		public int AddNum(double input)
 		{
 			numList.Add(input);
 			return numList.Count;
 		}
 
-		// get a number from the operand list
+		/// <summary>
+		/// get a number from the operand list
+		/// </summary>
+		/// <param name="pos">position of the number to get</param>
+		/// <returns>the number at the position</returns>
 		public double GetNum(int pos)
 		{
 			return numList[pos];
 		}
 
-		// add an operator to the list
+		/// <summary>
+		/// add an operator to the list
+		/// </summary>
+		/// <param name="input">operator to add to the list</param>
+		/// <returns>count of items in the list</returns>
 		public int AddOper(char input)
 		{
 			if (operList.Count < numList.Count)
@@ -43,7 +68,11 @@ namespace gui_calc.Class
 			return operList.Count;
 		}
 
-		// get an oeprator from the list
+		/// <summary>
+		/// get an oeprator from the list
+		/// </summary>
+		/// <param name="pos">position of the operator to get</param>
+		/// <returns>the operator at the position, '\0' if position is out of bounds</returns>
 		public char GetOper(int pos)
 		{
 			if (pos < operList.Count && pos >= 0)
@@ -56,24 +85,19 @@ namespace gui_calc.Class
 			}
 		}
 
+		/// <summary>
+		/// get the number of elements in the numbers (operands) or operators
+		/// </summary>
+		/// <returns></returns>
 		public int GetOperSize()
 		{
 			return numList.Count;
 		}
 
-		// set runningResult
-		public void SetRunningResult(double num)
-		{
-			runningResult = num;
-		}
-
-		// get runningResult
-		public double GetRunningResult()
-		{
-			return runningResult;
-		}
-
-		// get the equation in string
+		/// <summary>
+		/// get the formatted equation in string
+		/// </summary>
+		/// <returns></returns>
 		public string GetEquation()
 		{
 			string result = "";
@@ -90,7 +114,9 @@ namespace gui_calc.Class
 			return result;
 		}
 
-		// clear all lists
+		/// <summary>
+		/// clear all lists (numList and operList) and set runningResult to 0
+		/// </summary>
 		public void Clear()
 		{
 			numList.Clear();
@@ -98,7 +124,11 @@ namespace gui_calc.Class
 			runningResult = 0;
 		}
 
-		// do the calculation with the operator to the running result and return it
+		/// <summary>
+		/// do the calculation with the operator to the running result and return it
+		/// </summary>
+		/// <param name="oper">operator</param>
+		/// <returns>runningResult</returns>
 		public double Calculate(char oper)
 		{
 			switch (oper)
