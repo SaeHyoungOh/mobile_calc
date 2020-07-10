@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace gui_calc.ViewModel
 
@@ -18,14 +14,14 @@ namespace gui_calc.ViewModel
 		/// <summary>
 		/// holds the running result of the calculation equation so far
 		/// </summary>
-		public double runningResult { get; private set; }
+		public double RunningResult { get; private set; }
 
 		/// <summary>
 		/// constructor, initializes runningResult to 0
 		/// </summary>
 		public Calculation()
 		{
-			runningResult = 0;
+			RunningResult = 0;
 		}
 
 		/// <summary>
@@ -121,7 +117,7 @@ namespace gui_calc.ViewModel
 		{
 			numList.Clear();
 			operList.Clear();
-			runningResult = 0;
+			RunningResult = 0;
 		}
 
 		/// <summary>
@@ -135,22 +131,22 @@ namespace gui_calc.ViewModel
 			{
 				// add a number to runningResult
 				case '+':
-					runningResult += numList[numList.Count - 1];
+					RunningResult += numList[numList.Count - 1];
 					break;
 				// subtract runningResult by a number
 				case '-':
-					runningResult -= numList[numList.Count - 1];
+					RunningResult -= numList[numList.Count - 1];
 					break;
 				// multiply runningResult by a number
 				case '*':
-					runningResult *= numList[numList.Count - 1];
+					RunningResult *= numList[numList.Count - 1];
 					break;
 				// divide runningResult by a number
 				case '/':
-					runningResult /= numList[numList.Count - 1];
+					RunningResult /= numList[numList.Count - 1];
 					break;
 			}
-			return runningResult;
+			return RunningResult;
 		}
 	}
 }
